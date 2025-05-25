@@ -242,7 +242,8 @@ export const generator = {
           y: -118.36743880955402,
         },
       },
-      prompt: "Greet the user and help them create a new AI Interviewer",
+      prompt:
+        "Greet the user and introduce yourself as below:\nHello, {{ username }}! Let's prepare your interview. I'll ask you a few questions and generate a perfect interview just for you. Are you ready ?",
       model: {
         model: "gpt-4.1-nano",
         provider: "openai",
@@ -338,7 +339,7 @@ export const generator = {
         },
       },
       method: "POST",
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/vapi/generate`,
+      url: "https://ai-interview-platform-ecru-eight.vercel.app/api/vapi/generate",
       headers: {
         type: "object",
         properties: {},
