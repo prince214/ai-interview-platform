@@ -20,7 +20,7 @@ interface Interview {
   questions: string[];
   techstack: string[];
   createdAt: string;
-  userId: string;
+  userid: string;
   type: string;
   finalized: boolean;
 }
@@ -39,7 +39,7 @@ interface User {
 }
 
 interface InterviewCardProps {
-  interviewId?: string;
+  id?: string;
   userId?: string;
   role: string;
   type: string;

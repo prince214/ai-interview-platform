@@ -3,25 +3,22 @@ import Link from "next/link";
 import React from "react";
 import Image from "next/image";
 import InterviewCard from "@/components/InterviewCard";
+import { getCurrentUser } from "@/lib/actions/auth.action";
 import {
-  getCurrentUser,
   getInterviewByUserId,
   getLatestInterviews,
-} from "@/lib/actions/auth.actions";
+} from "@/lib/actions/general.action";
 
 async function page() {
   const user = await getCurrentUser();
   const [userInterviews, latestInterviews] = await Promise.all([
     await getInterviewByUserId(user?.id!),
-    await getLatestInterviews({ userId: user?.id! })
-  ])
-
-  console.log("userInterviews".userInterviews);
-  
+    await getLatestInterviews({ userId: user?.id! }),
+  ]);
 
   const hasPastInterviews = userInterviews && userInterviews.length > 0;
   const hasUpcomingInterviews = latestInterviews?.length > 0;
-  
+
   return (
     <>
       <section className="card-cta">
