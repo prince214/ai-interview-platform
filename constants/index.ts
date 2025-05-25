@@ -243,9 +243,9 @@ export const generator = {
         },
       },
       prompt:
-        "Greet the user and introduce yourself as below:\nHello, {{ username }}! Let's prepare your interview. I'll ask you a few questions and generate a perfect interview just for you. Are you ready ?",
+        "Greet the user saying : Hello, {{ username}}! Lets prepare your interview. I'll ask you a few questions and generate a perfect interview just for you. \nAnd then start asking about the interview role, type etc.",
       model: {
-        model: "gpt-4.1-nano",
+        model: "gpt-4.1-mini",
         provider: "openai",
         maxTokens: 1000,
         temperature: 0.7,
@@ -318,9 +318,10 @@ export const generator = {
           y: 222.8711327453523,
         },
       },
-      prompt: "Say that the Interview will be generated shortly.",
+      prompt:
+        "Based on your responses, a customised interview will be generated for you. The interview will be prepared shortly after your confirmation. Please confirm if you want to proceed.",
       model: {
-        model: "gpt-4.1-nano",
+        model: "gpt-4.1-mini",
         provider: "openai",
         maxTokens: 1000,
         temperature: 0.7,
@@ -339,7 +340,7 @@ export const generator = {
         },
       },
       method: "POST",
-      url: "https://ai-interview-platform-ecru-eight.vercel.app/api/vapi/generate",
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/vapi/generate`,
       headers: {
         type: "object",
         properties: {},
@@ -396,9 +397,9 @@ export const generator = {
         },
       },
       prompt:
-        "Say that the interview has been generated and thank the user for the call.",
+        "Say that the interview has been generated, and you can access it in your dashboard. Then thank the user for the call.",
       model: {
-        model: "gpt-4.1-nano",
+        model: "gpt-4.1-mini",
         provider: "openai",
         maxTokens: 1000,
         temperature: 0.7,
@@ -458,7 +459,7 @@ export const generator = {
       {
         role: "system",
         content:
-          "You are a voice assistant helping with creating new AI interviewers. Your task is to collect data from the user. Remember that this is a voice conversation - do not use any special characters.",
+          "You are a voice assistant helping with creating new AI interviewers. Your task is to collect data from the user. Remember that this is a voice conversation - do not use any special characters.\nUser name is  {{ username }}",
       },
     ],
     provider: "openai",
