@@ -228,3 +228,239 @@ export const dummyInterviews: Interview[] = [
     createdAt: "2024-03-14T15:30:00Z",
   },
 ];
+
+export const generator = {
+  name: "interview_ai_bot",
+  nodes: [
+    {
+      name: "start",
+      type: "conversation",
+      isStart: true,
+      metadata: {
+        position: {
+          x: -441.6216049132745,
+          y: -118.36743880955402,
+        },
+      },
+      prompt: "Greet the user and help them create a new AI Interviewer",
+      model: {
+        model: "gpt-4.1-nano",
+        provider: "openai",
+        maxTokens: 1000,
+        temperature: 0.7,
+      },
+      voice: {
+        model: "aura-2",
+        voiceId: "thalia",
+        provider: "deepgram",
+        chunkPlan: {
+          enabled: true,
+          formatPlan: {
+            enabled: true,
+            replacements: [],
+            numberToDigitsCutoff: 2025,
+          },
+          minCharacters: 30,
+          punctuationBoundaries: [".", "!", "?", ";"],
+        },
+        mipOptOut: false,
+        cachingEnabled: true,
+      },
+      variableExtractionPlan: {
+        output: [
+          {
+            enum: ["Frontend", "Backend", "Fullstack", "Design", "UX"],
+            type: "string",
+            title: "role",
+            description:
+              "What role would you like to train for? For example, Frontend, Backend, Fullstack, Design, UX",
+          },
+          {
+            enum: ["technical", "behavioral ", "mixed "],
+            type: "string",
+            title: "type",
+            description:
+              "Are you aiming for a technical, behavioral or mixed interview?",
+          },
+          {
+            enum: [],
+            type: "string",
+            title: "level",
+            description: "The job experience level",
+          },
+          {
+            enum: [],
+            type: "string",
+            title: "techstack",
+            description:
+              "A list of technologies to cover during the job interview",
+          },
+          {
+            enum: [],
+            type: "string",
+            title: "amount",
+            description:
+              "How many questions would you like me to prepare for you ?",
+          },
+        ],
+      },
+      messagePlan: {
+        firstMessage: "Hey there!",
+      },
+    },
+    {
+      name: "conversation_1748153357680",
+      type: "conversation",
+      metadata: {
+        position: {
+          x: -439.72080133921395,
+          y: 222.8711327453523,
+        },
+      },
+      prompt: "Say that the Interview will be generated shortly.",
+      model: {
+        model: "gpt-4.1-nano",
+        provider: "openai",
+        maxTokens: 1000,
+        temperature: 0.7,
+      },
+      messagePlan: {
+        firstMessage: "",
+      },
+    },
+    {
+      name: "apiRequest_1748153524388",
+      type: "apiRequest",
+      metadata: {
+        position: {
+          x: -439.72080133921395,
+          y: 472.87113274535227,
+        },
+      },
+      method: "POST",
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/vapi/generate`,
+      headers: {
+        type: "object",
+        properties: {},
+      },
+      body: {
+        type: "object",
+        properties: {
+          role: {
+            type: "string",
+            value: "{{ role }}",
+            description: "",
+          },
+          type: {
+            type: "string",
+            value: "{{ type }}",
+            description: "",
+          },
+          level: {
+            type: "string",
+            value: "{{ level }}",
+            description: "",
+          },
+          amount: {
+            type: "string",
+            value: "{{ amount }}",
+            description: "",
+          },
+          userid: {
+            type: "string",
+            value: "{{ userid }}",
+            description: "",
+          },
+          techstack: {
+            type: "string",
+            value: "{{ techstack }}",
+            description: "",
+          },
+        },
+      },
+      output: {
+        type: "object",
+        properties: {},
+      },
+      mode: "blocking",
+      hooks: [],
+    },
+    {
+      name: "conversation_1748153763416",
+      type: "conversation",
+      metadata: {
+        position: {
+          x: -439.72080133921395,
+          y: 772.8711327453523,
+        },
+      },
+      prompt:
+        "Say that the interview has been generated and thank the user for the call.",
+      model: {
+        model: "gpt-4.1-nano",
+        provider: "openai",
+        maxTokens: 1000,
+        temperature: 0.7,
+      },
+      messagePlan: {
+        firstMessage: "",
+      },
+    },
+    {
+      name: "hangup_1748153833548",
+      type: "hangup",
+      metadata: {
+        position: {
+          x: -346.8874680058806,
+          y: 1022.8711327453523,
+        },
+      },
+    },
+  ],
+  edges: [
+    {
+      from: "start",
+      to: "conversation_1748153357680",
+      condition: {
+        type: "ai",
+        prompt: "If the user provided all the required variables",
+      },
+    },
+    {
+      from: "conversation_1748153357680",
+      to: "apiRequest_1748153524388",
+      condition: {
+        type: "ai",
+        prompt: "",
+      },
+    },
+    {
+      from: "apiRequest_1748153524388",
+      to: "conversation_1748153763416",
+      condition: {
+        type: "ai",
+        prompt: "",
+      },
+    },
+    {
+      from: "conversation_1748153763416",
+      to: "hangup_1748153833548",
+      condition: {
+        type: "ai",
+        prompt: "",
+      },
+    },
+  ],
+  model: {
+    model: "gpt-4o",
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are a voice assistant helping with creating new AI interviewers. Your task is to collect data from the user. Remember that this is a voice conversation - do not use any special characters.",
+      },
+    ],
+    provider: "openai",
+    temperature: 0.7,
+  },
+};
