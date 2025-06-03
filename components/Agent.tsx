@@ -32,6 +32,7 @@ const Agent = ({
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
   const [messages, setMessages] = useState<SavedMessage[]>([]);
 
+  console.log("userId",userName)
   useEffect(() => {
     const onCallStart = () => setCallStatus(CallStatus.ACTIVE);
     const onCallEnd = () => setCallStatus(CallStatus.FINISHED);
@@ -100,8 +101,8 @@ const Agent = ({
         undefined,
         {
           variableValues: {
-            userId: userId,
-            userName: userName,
+            userid: userId,
+            username: userName,
           },
         },
         undefined,
