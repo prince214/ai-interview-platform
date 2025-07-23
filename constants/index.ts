@@ -233,17 +233,17 @@ export const generator = {
   name: "interview_ai_bot",
   nodes: [
     {
-      name: "start",
+      name: "Node 1",
       type: "conversation",
       isStart: true,
       metadata: {
         position: {
-          x: -441.6216049132745,
-          y: -118.36743880955402,
+          x: -449.8160050884255,
+          y: -351.1322372463883,
         },
       },
       prompt:
-        "Greet the user saying : Hello, {{ username}}! Lets prepare your interview. I'll ask you a few questions and generate a perfect interview just for you. \nAnd then start asking about the interview role, type etc.",
+        "Introduce yourself as a virtual assistant created by Prince. and tell what you will be doing the whole call session like by saying Lets prepare your interview. I'll ask you a few questions and generate a perfect interview just for you. ",
       model: {
         model: "gpt-4.1-mini",
         provider: "openai",
@@ -286,6 +286,13 @@ export const generator = {
           {
             enum: [],
             type: "string",
+            title: "amount",
+            description:
+              "How many questions would you like me to prepare for you ?",
+          },
+          {
+            enum: [],
+            type: "string",
             title: "level",
             description: "The job experience level",
           },
@@ -296,21 +303,15 @@ export const generator = {
             description:
               "A list of technologies to cover during the job interview",
           },
-          {
-            enum: [],
-            type: "string",
-            title: "amount",
-            description:
-              "How many questions would you like me to prepare for you ?",
-          },
         ],
       },
       messagePlan: {
-        firstMessage: "Hey there!",
+        firstMessage: "Hi {{username}}",
       },
+      toolIds: [],
     },
     {
-      name: "conversation_1748153357680",
+      name: "Confirmation",
       type: "conversation",
       metadata: {
         position: {
@@ -326,21 +327,27 @@ export const generator = {
         maxTokens: 1000,
         temperature: 0.7,
       },
+      voice: {
+        model: "aura-2",
+        voiceId: "thalia",
+        provider: "deepgram",
+      },
       messagePlan: {
         firstMessage: "",
       },
+      toolIds: [],
     },
     {
       name: "apiRequest_1748153524388",
       type: "apiRequest",
       metadata: {
         position: {
-          x: -439.72080133921395,
-          y: 472.87113274535227,
+          x: -428.05413467254726,
+          y: 584.5377994120189,
         },
       },
       method: "POST",
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/vapi/generate`,
+      url: "https://ai-interview-platform-ecru-eight.vercel.app/api/vapi/generate",
       headers: {
         type: "object",
         properties: {},
@@ -380,20 +387,16 @@ export const generator = {
           },
         },
       },
-      output: {
-        type: "object",
-        properties: {},
-      },
+      output: null,
       mode: "blocking",
-      hooks: [],
     },
     {
-      name: "conversation_1748153763416",
+      name: "Final Response",
       type: "conversation",
       metadata: {
         position: {
-          x: -439.72080133921395,
-          y: 772.8711327453523,
+          x: -918.6849598873973,
+          y: 916.9461167225228,
         },
       },
       prompt:
@@ -407,49 +410,50 @@ export const generator = {
       messagePlan: {
         firstMessage: "",
       },
+      toolIds: [],
     },
     {
       name: "hangup_1748153833548",
       type: "hangup",
       metadata: {
         position: {
-          x: -346.8874680058806,
-          y: 1022.8711327453523,
+          x: -351.4430401505664,
+          y: 1027.4267048900383,
         },
       },
     },
   ],
   edges: [
     {
-      from: "start",
-      to: "conversation_1748153357680",
-      condition: {
-        type: "ai",
-        prompt: "If the user provided all the required variables",
-      },
-    },
-    {
-      from: "conversation_1748153357680",
+      from: "Confirmation",
       to: "apiRequest_1748153524388",
       condition: {
         type: "ai",
-        prompt: "",
+        prompt: "if user says yes",
       },
     },
     {
       from: "apiRequest_1748153524388",
-      to: "conversation_1748153763416",
+      to: "Final Response",
       condition: {
         type: "ai",
         prompt: "",
       },
     },
     {
-      from: "conversation_1748153763416",
+      from: "Final Response",
       to: "hangup_1748153833548",
       condition: {
         type: "ai",
         prompt: "",
+      },
+    },
+    {
+      from: "Node 1",
+      to: "Confirmation",
+      condition: {
+        type: "ai",
+        prompt: "user said yes",
       },
     },
   ],
@@ -465,4 +469,5 @@ export const generator = {
     provider: "openai",
     temperature: 0.7,
   },
+  globalPrompt: "",
 };

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { vapi } from "@/lib/vapi.sdk";
 import { generator, interviewer } from "@/constants";
 import { createFeedback } from "@/lib/actions/general.action";
+import { toast } from "sonner";
 
 enum CallStatus {
   ACTIVE = "ACTIVE",
@@ -32,7 +33,6 @@ const Agent = ({
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
   const [messages, setMessages] = useState<SavedMessage[]>([]);
 
-  console.log("userId",userName)
   useEffect(() => {
     const onCallStart = () => setCallStatus(CallStatus.ACTIVE);
     const onCallEnd = () => setCallStatus(CallStatus.FINISHED);
@@ -46,7 +46,7 @@ const Agent = ({
 
     const onSpeechStart = () => setIsSpeaking(true);
     const onSpeechEnd = () => setIsSpeaking(false);
-    const onError = (error: Error) => console.log("Error:", error);
+    const onError = (e: any) => toast.error(e.error.message[0]);
 
     vapi.on("call-start", onCallStart);
     vapi.on("call-end", onCallEnd);
