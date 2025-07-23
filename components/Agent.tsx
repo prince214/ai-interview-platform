@@ -76,8 +76,8 @@ const Agent = ({
     if (success && id) {
       router.push(`/interview/${interviewId}/feedback`);
     } else {
-      console.error("Failed to generate feedback");
-      //router.push("/");
+      toast.error("Failed to generate feedback");
+      router.push("/");
     }
   };
 
@@ -98,16 +98,18 @@ const Agent = ({
 
     if (type === "generate") {
       await vapi.start(
+        undefined, 
         undefined,
+        undefined,
+        generator,
         {
-          variableValues: {
+          variableValues: 
+          { 
             userid: userId,
             username: userName,
-          },
-        },
-        undefined,
-        generator
-      );
+          }
+        }
+    );
     } else {
       let formattedQuestions = "";
       if (questions) {
@@ -138,10 +140,10 @@ const Agent = ({
         <div className="card-interviewer">
           <div className="avatar">
             <Image
-              src="/ai-avatar.png"
+              src="/dark-logo.png"
               alt="AI Avatar"
-              width={54}
-              height={54}
+              width={64}
+              height={64}
               className="object-cover"
             />
             {isSpeaking && <span className="animate-speak" />}

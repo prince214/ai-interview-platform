@@ -1,6 +1,7 @@
 import { Toaster } from "sonner";
 import type { Metadata } from "next";
 import { Mona_Sans } from "next/font/google";
+import NextTopLoader from 'nextjs-toploader';
 
 import "./globals.css";
 
@@ -10,7 +11,7 @@ const monaSans = Mona_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "PrepWise",
+  title: "InterviewWise",
   description: "An AI-powered platform for preparing for mock interviews",
 };
 
@@ -22,8 +23,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${monaSans.className} antialiased pattern`}>
+        <NextTopLoader color="#dd5422ff" />
         {children}
-
         <Toaster />
       </body>
     </html>
